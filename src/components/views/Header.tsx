@@ -15,7 +15,7 @@ const Header = () => {
               <Logo size={48} />
               <Link to="/">
                 <span className=" font-bold text-xl text-white ">
-                  CryptoHunt |
+                  KryptoHunt |
                 </span>
               </Link>
             </div>

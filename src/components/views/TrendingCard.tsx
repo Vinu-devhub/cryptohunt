@@ -36,7 +36,7 @@ const TrendingCard = () => {
           change in the last 24 hours.
         </CardDescription>
       </CardHeader>
-      <CardContent className=" flex justify-between overflow-x-scroll xl:overflow-x-hidden gap-5 p-0">
+      <CardContent className=" flex justify-between overflow-x-scroll gap-5 p-0">
         {trendingCoins.length !== 0
           ? trendingCoins.map((trendingCoin) => (
               <RankCard
