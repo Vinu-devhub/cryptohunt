@@ -1,7 +1,15 @@
 import { useLocalStorage } from "@/hooks/useLocalStorage";
 import { createContext, useEffect, useState } from "react";
 
-export const FavoriteContext = createContext({});
+interface FavoriteContextProps {
+  addCoin: (coinId: string) => void;
+  removeCoin: (coinId: string) => void;
+  allCoins: string[];
+}
+export const FavoriteContext = createContext<FavoriteContextProps | undefined>(
+  undefined,
+);
+// export const FavoriteContext = createContext({});
 
 export const FavoriteProvider = ({
   children,
@@ -13,7 +21,7 @@ export const FavoriteProvider = ({
   const { setItem, getItem } = useLocalStorage("coins");
 
   const addCoin = (coinId: string) => {
-    const oldCoins = getItem();
+    const oldCoins = getItem() || [];
     if (oldCoins.includes(coinId)) {
       return null;
     }
@@ -24,8 +32,8 @@ export const FavoriteProvider = ({
   };
 
   const removeCoin = (coinId: string) => {
-    const oldCoins = getItem();
-    const newCoins = oldCoins.filter((id) => id !== coinId);
+    const oldCoins = getItem() || [];
+    const newCoins = oldCoins.filter((id: string) => id !== coinId);
 
     setAllCoins(newCoins);
     setItem(newCoins);

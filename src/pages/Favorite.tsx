@@ -6,12 +6,11 @@ import {
   columns,
 } from "@/components/views/datatable/tablecomponents/columns";
 import { FavoriteContext } from "@/context/FavoriteContext";
-import axios from "axios";
+import axios, { AxiosError } from "axios";
 import { useContext, useEffect, useState } from "react";
 
 const Favorite = () => {
-  const { allCoins } = useContext(FavoriteContext);
-  const [error, setError] = useState();
+  const [error, setError] = useState<AxiosError | unknown>();
   const [isLoading, setisLoading] = useState(false);
   const [favoriteCoins, setFavoriteCoins] = useState<Cryptocurrency[]>([]);
 
@@ -21,10 +20,11 @@ const Favorite = () => {
       try {
         const data = await axios.get(
           `https://api.coingecko.com/api/v3/coins/markets?vs_currency=usd&ids=${allCoins.join(
-            ",")}&order=market_cap_desc&per_page=100&page=1&sparkline=false&locale=en`,
+            ",",
+          )}&order=market_cap_desc&per_page=100&page=1&sparkline=false&locale=en`,
         );
         setFavoriteCoins(data.data);
-      } catch (error) {
+      } catch (error: AxiosError | unknown) {
         console.log("Error while getting market data   : ", error);
         setError(error);
       } finally {
@@ -37,6 +37,14 @@ const Favorite = () => {
     }
   }, []);
 
+  const favoriteContext = useContext(FavoriteContext);
+
+  if (!favoriteContext) {
+    return null;
+  }
+
+  const { allCoins } = favoriteContext;
+
   return (
     <div className=" my-10">
       {allCoins.length !== 0 ? (
@@ -46,10 +54,14 @@ const Favorite = () => {
           ) : (
             <>
               {error ? (
-                <h1 className=" text-red-600 text-4xl  font-semibold">Something went wrong! Please try again later...</h1>
+                <h1 className=" text-red-600 text-4xl  font-semibold">
+                  Something went wrong! Please try again later...
+                </h1>
               ) : (
                 <div className="bg-[#121318] w-full m-0 p-10 pt-12 rounded-lg">
-                  <h1 className=" text-3xl text-blue-600 py-5">Favorite Coins</h1>
+                  <h1 className=" text-3xl text-blue-600 py-5">
+                    Favorite Coins
+                  </h1>
                   <DataTable columns={columns} data={favoriteCoins} />
                 </div>
               )}

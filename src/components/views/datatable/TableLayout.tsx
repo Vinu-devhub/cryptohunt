@@ -1,4 +1,4 @@
-import axios from "axios";
+import axios, { AxiosError } from "axios";
 import { useEffect, useState } from "react";
 import DataTable from "./tablecomponents/DataTable";
 import TableSkeleton from "./tablecomponents/TableSkeleton";
@@ -8,7 +8,7 @@ const API_URL =
   "https://api.coingecko.com/api/v3/coins/markets?vs_currency=usd&order=market_cap_desc&per_page=100&page=1&sparkline=false&locale=en";
 
 const TableLayout = () => {
-  const [error, setError] = useState();
+  const [error, setError] = useState<AxiosError | unknown>();
   const [isLoading, setisLoading] = useState(false);
   const [marketData, setMarketData] = useState<Cryptocurrency[]>([]);
 
@@ -18,7 +18,7 @@ const TableLayout = () => {
       try {
         const data = await axios.get(API_URL);
         setMarketData(data.data);
-      } catch (error) {
+      } catch (error: AxiosError | unknown) {
         console.log("Error while getting market data   : ", error);
         setError(error);
       } finally {

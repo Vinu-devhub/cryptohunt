@@ -17,7 +17,7 @@ import {
 interface DataTablePaginationProps<TData> {
   table: Table<TData>;
 }
-const TablePagination = ({ table }: DataTablePaginationProps<TData>) => {
+function TablePagination<TData>({ table }: DataTablePaginationProps<TData>) {
   return (
     <div className="flex items-center justify-between px-2 pt-4 border-t border-gray-800 text-white">
       <div className="flex w-[100px] items-center justify-center text-sm font-medium">
@@ -86,6 +86,6 @@ const TablePagination = ({ table }: DataTablePaginationProps<TData>) => {
       </div>
     </div>
   );
-};
+}
 
 export default TablePagination;
